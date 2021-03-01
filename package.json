@@ -26,6 +26,8 @@
     ]
   },
   "dependencies": {
+    "@egjs/flicking": "^3.8.0",
+    "@egjs/react-flicking": "^3.6.0",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
@@ -34,11 +36,13 @@
     "clsx": "^1.1.1",
     "formik": "^2.1.5",
     "history": "^5.0.0",
+    "keen-slider": "^5.4.0",
     "lodash": "^4.17.19",
     "moment": "^2.27.0",
     "nprogress": "^0.2.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
+    "react-alice-carousel": "^2.4.0",
     "react-chartjs-2": "^2.10.0",
     "react-dom": "^16.13.1",
     "react-feather": "^2.0.8",

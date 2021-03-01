@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
+import NavBar from './NavBar';
 import TopBar from './TopBar';
+import Footer from './Footer';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
-    backgroundColor: theme.palette.background.default,
     display: 'flex',
-    height: '100%',
+    // height: '100%',
+    flexDirection: 'column',
     overflow: 'hidden',
     width: '100%'
   },
@@ -24,17 +26,22 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flex: '1 1 auto',
-    height: '100%',
+    // height: '100%',
     overflow: 'auto'
   }
 }));
 
 const MainLayout = () => {
   const classes = useStyles();
+  const [isMobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
     <div className={classes.root}>
-      <TopBar />
+      <TopBar onMobileNavOpen={() => setMobileNavOpen(true)} />
+      <NavBar
+        onMobileClose={() => setMobileNavOpen(false)}
+        openMobile={isMobileNavOpen}
+      />
       <div className={classes.wrapper}>
         <div className={classes.contentContainer}>
           <div className={classes.content}>
@@ -42,6 +49,7 @@ const MainLayout = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

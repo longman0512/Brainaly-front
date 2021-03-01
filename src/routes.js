@@ -5,10 +5,11 @@ import MainLayout from 'src/layouts/MainLayout';
 import AccountView from 'src/views/account/AccountView';
 import CustomerListView from 'src/views/customer/CustomerListView';
 import DashboardView from 'src/views/reports/DashboardView';
-import LoginView from 'src/views/auth/LoginView';
+import HomeView from 'src/views/home/HomeView';
 import NotFoundView from 'src/views/errors/NotFoundView';
 import ProductListView from 'src/views/product/ProductListView';
 import RegisterView from 'src/views/auth/RegisterView';
+import LoginView from 'src/views/auth/LoginView';
 import SettingsView from 'src/views/settings/SettingsView';
 
 const routes = [
@@ -28,10 +29,12 @@ const routes = [
     path: '/',
     element: <MainLayout />,
     children: [
-      { path: 'login', element: <LoginView /> },
+      { path: 'home', element: <HomeView /> },
+      { path: 'signup', element: <RegisterView /> },
       { path: 'register', element: <RegisterView /> },
+      { path: 'signin', element: <LoginView /> },
       { path: '404', element: <NotFoundView /> },
-      { path: '/', element: <Navigate to="/app/dashboard" /> },
+      { path: '/', element: <HomeView /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
   }
