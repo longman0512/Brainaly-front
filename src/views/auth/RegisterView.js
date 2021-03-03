@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-indent */
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
@@ -13,9 +14,19 @@ import {
   TextField,
   Typography,
   makeStyles,
-  Card
+  Card,
+  InputAdornment,
+  IconButton,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from '@material-ui/core';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Page from 'src/components/Page';
+import { signUp } from 'src/utils/Api';
+import cogoToast from 'cogo-toast';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,12 +34,27 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3)
+  },
+  formControl: {
+    width: '100%'
   }
 }));
 
 const RegisterView = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [accountType, setAcctType] = React.useState('teacher');
+  const handChangeAccType = (value) => {
+    console.log(value.target.value);
+    setAcctType(value.target.value);
+  };
+  const handleClickShowPassword = () => {
+    console.log('asdasdasdsd');
+  };
+  const handleMouseDownPassword = () => {
+    console.log('asdasdasd');
+  };
 
   return (
     <Page
@@ -47,21 +73,39 @@ const RegisterView = () => {
               initialValues={{
                 email: '',
                 firstName: '',
-                lastName: '',
+                userName: '',
                 password: '',
                 policy: false
               }}
               validationSchema={
               Yup.object().shape({
                 email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                lastName: Yup.string().max(255).required('Last name is required'),
+                userName: Yup.string().max(255).required('User name is required'),
                 password: Yup.string().max(255).required('password is required'),
                 policy: Yup.boolean().oneOf([true], 'This field must be checked')
               })
             }
               onSubmit={async (values) => {
                 console.log(values);
-                // navigate('/home', { replace: true });
+                signUp({
+                  userEmail: values.email,
+                  userName: values.userName,
+                  userPwd: values.password,
+                  userType: accountType
+                }).then((res) => {
+                  if (res.flag) {
+                    cogoToast.success(res.msg, { position: 'bottom-right' });
+                    setTimeout(() => {
+                      navigate('/', { replace: true });
+                    }, 1500);
+                  } else {
+                    cogoToast.warn(res.msg, { position: 'bottom-right' });
+                    setTimeout(() => {
+                      navigate('/', { replace: true });
+                    }, 1500);
+                  }
+                  console.log(res, 'in front - end');
+                });
               }}
             >
               {({
@@ -89,16 +133,29 @@ const RegisterView = () => {
                       Use your email to create new account
                     </Typography>
                   </Box>
+                  <FormControl variant="outlined" className={classes.formControl}>
+                    <InputLabel>Select your Account Type</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-outlined-label"
+                      id="demo-simple-select-outlined"
+                      value={accountType}
+                      onChange={handChangeAccType}
+                      label="Select your Account Type"
+                    >
+                      <MenuItem value="teacher">Teacher</MenuItem>
+                      <MenuItem value="student">Student</MenuItem>
+                    </Select>
+                  </FormControl>
                   <TextField
-                    error={Boolean(touched.lastName && errors.lastName)}
+                    error={Boolean(touched.userName && errors.userName)}
                     fullWidth
-                    helperText={touched.lastName && errors.lastName}
+                    helperText={touched.userName && errors.userName}
                     label="User name"
                     margin="normal"
-                    name="lastName"
+                    name="userName"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    value={values.lastName}
+                    value={values.userName}
                     variant="outlined"
                   />
                   <TextField
@@ -123,9 +180,16 @@ const RegisterView = () => {
                     name="password"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     value={values.password}
                     variant="outlined"
+                    InputProps={{
+                      endAdornment: <InputAdornment position="end">
+                        <IconButton aria-label="toggle password visibility" onClick={() => { setShowPassword(true); }} onMouseDown={() => setShowPassword(false)}>
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                                    </InputAdornment>,
+                    }}
                   />
                   <Box
                     alignItems="center"
