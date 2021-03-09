@@ -1,6 +1,5 @@
 import { createMuiTheme, colors } from '@material-ui/core';
 import shadows from './shadows';
-import typography from './typography';
 
 const theme = createMuiTheme({
   palette: {
@@ -21,7 +20,10 @@ const theme = createMuiTheme({
     }
   },
   shadows,
-  typography
+  typography: {
+    fontFamily: 'Calibri',
+    fontWeight: 'bold'
+  }
 });
 
 export default theme;

@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Redirect } from 'react-router-dom';
 import DashboardLayout from 'src/layouts/DashboardLayout';
 import MainLayout from 'src/layouts/MainLayout';
 import AccountView from 'src/views/account/AccountView';
@@ -11,6 +12,9 @@ import ProductListView from 'src/views/product/ProductListView';
 import RegisterView from 'src/views/auth/RegisterView';
 import LoginView from 'src/views/auth/LoginView';
 import SettingsView from 'src/views/settings/SettingsView';
+import StoreContext from 'src/context/index';
+
+const { store } = React.useContext(StoreContext);
 
 const routes = [
   {
@@ -31,7 +35,18 @@ const routes = [
     children: [
       { path: 'home', element: <HomeView /> },
       { path: 'signup', element: <RegisterView /> },
-      { path: 'register', element: <RegisterView /> },
+      { path: 'signin', element: <LoginView /> },
+      { path: '404', element: <NotFoundView /> },
+      { path: '/', element: <HomeView /> },
+      { path: '*', element: <Navigate to="/404" /> }
+    ]
+  },
+  {
+    path: 'user',
+    element: <DashboardLayout />,
+    children: [
+      { path: 'home', element: store.userEmail ? <Redirect to="/signin" /> : <ProductListView /> },
+      { path: 'signup', element: <RegisterView /> },
       { path: 'signin', element: <LoginView /> },
       { path: '404', element: <NotFoundView /> },
       { path: '/', element: <HomeView /> },

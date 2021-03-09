@@ -93,16 +93,14 @@ const RegisterView = () => {
                   userPwd: values.password,
                   userType: accountType
                 }).then((res) => {
+                  if (typeof res === 'undefined') cogoToast.error('SignUp Failed', { position: 'bottom-right' });
                   if (res.flag) {
                     cogoToast.success(res.msg, { position: 'bottom-right' });
                     setTimeout(() => {
-                      navigate('/', { replace: true });
+                      navigate('/user/signin', { replace: true });
                     }, 1500);
                   } else {
                     cogoToast.warn(res.msg, { position: 'bottom-right' });
-                    setTimeout(() => {
-                      navigate('/', { replace: true });
-                    }, 1500);
                   }
                   console.log(res, 'in front - end');
                 });

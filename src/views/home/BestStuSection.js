@@ -13,6 +13,7 @@ import {
   IconButton,
   Typography
 } from '@material-ui/core';
+import Bounce from 'react-reveal/Bounce';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,7 +79,9 @@ const StudentSection = () => {
       >
         <Grid item xs={12} container direction="column" spacing={2} justifyContent="center" alignItems="center">
           <Grid item xs className={classes.titleContainer}>
-            <div style={{ color: '#01025C', fontSize: 46, fontWeight: 'bold' }}>Voice of Our Best Students</div>
+            <Bounce top>
+              <div style={{ color: '#01025C', fontSize: 46, fontWeight: 'bold' }}>Voice of Our Best Students</div>
+            </Bounce>
           </Grid>
         </Grid>
         <Card className={classes.stuContainer}>
@@ -93,10 +96,12 @@ const StudentSection = () => {
               xs={12}
               item
             >
-              <CardMedia
-                className={classes.cover}
-                image="static/images/bestStudent.png"
-              />
+              <Bounce left>
+                <CardMedia
+                  className={classes.cover}
+                  image="static/images/bestStudent.png"
+                />
+              </Bounce>
             </Grid>
             <Grid
               xl={8}
@@ -106,23 +111,25 @@ const StudentSection = () => {
               item
             >
               <div className={classes.details}>
-                <CardContent className={classes.content}>
-                  <Typography component="div" style={{ color: '#01025C', fontSize: 46, fontWeight: 'bold' }}>
-                    I Love Learning
-                  </Typography>
-                  <Typography
-                    component="div"
-                    style={{
-                      color: '#5E2B66', fontSize: 30
-                    }}
-                  >
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros,
-                    pulvinar facilisis justo mollis, auctor consequat urna. Morbi a bibendum metus.
-                    Donec scelerisque sollicitudin enim eu venenatis. Duis tincidunt laoreet ex,
-                    in pretium orci vestibulum eget. Class aptent taciti sociosqu ad litora torquent
-                    per conubia nostra, per inceptos himenaeos.
-                  </Typography>
-                </CardContent>
+                <Bounce right>
+                  <CardContent className={classes.content}>
+                    <Typography component="div" style={{ color: '#01025C', fontSize: 46, fontWeight: 'bold' }}>
+                      I Love Learning
+                    </Typography>
+                    <Typography
+                      component="div"
+                      style={{
+                        color: '#5E2B66', fontSize: 30
+                      }}
+                    >
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros,
+                      pulvinar facilisis justo mollis, auctor consequat urna. Morbi a bibendum metus.
+                      Donec scelerisque sollicitudin enim eu venenatis. Duis tincidunt laoreet ex,
+                      in pretium orci vestibulum eget. Class aptent taciti sociosqu ad litora torquent
+                      per conubia nostra, per inceptos himenaeos.
+                    </Typography>
+                  </CardContent>
+                </Bounce>
               </div>
             </Grid>
           </Grid>

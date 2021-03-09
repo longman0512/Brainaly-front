@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
@@ -23,17 +24,18 @@ const useStyles = makeStyles(() => ({
   },
   topBar: {
     paddingLeft: 30,
-    height: 79,
+    height: 60,
     display: 'flex',
     justifyContent: 'center',
-    background: 'linear-gradient(180deg, rgba(246,242,242,1) 10%, rgba(255,255,255,1) 51%, rgba(235,231,231,1) 100%)',
-    boxShadow: '0px 5px 11px -1px rgba(0,0,0,0.75)'
+    // background: 'linear-gradient(180deg, rgba(246,242,242,1) 10%, rgba(255,255,255,1) 51%, rgba(235,231,231,1) 100%)',
+    backgroundColor: 'white',
+    boxShadow: '0px 2px 2px -1px rgba(0,0,0,0.75)'
   },
   linkStyel: {
     color: '#01025C',
     fontSize: 22,
     fontWeight: 'bold',
-    marginLeft: 30
+    marginLeft: 20
   }
 }));
 
@@ -67,32 +69,32 @@ const TopBar = ({
             className={clsx(classes.linkStyel, className)}
             to="/home"
           >
-            How It Works
+            How it works
           </RouterLink>
           <RouterLink
             className={clsx(classes.linkStyel, className)}
             to="/home"
           >
-            Way to Play
+            Way to play
           </RouterLink>
           <RouterLink
             className={clsx(classes.linkStyel, className)}
             to="/home"
           >
-            About Us
+            About us
           </RouterLink>
           <RouterLink
             className={clsx(classes.linkStyel, className)}
             to="/signup"
           >
-            Sign UP
+            Join us
           </RouterLink>
-          <RouterLink
+          {/* <RouterLink
             className={clsx(classes.linkStyel, className)}
             to="/signin"
           >
             Sign In
-          </RouterLink>
+          </RouterLink> */}
         </Hidden>
         <Hidden lgUp>
           <IconButton

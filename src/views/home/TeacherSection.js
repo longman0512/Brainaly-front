@@ -12,6 +12,7 @@ import {
   Avatar
 } from '@material-ui/core';
 import AliceCarousel from 'react-alice-carousel';
+import Zoom from 'react-reveal/Zoom';
 import TeacherItem from '../../components/TeacherItem';
 import 'react-alice-carousel/lib/alice-carousel.css';
 
@@ -123,7 +124,9 @@ const TeacherSection = () => {
       >
         <Grid item xs={12} container direction="column" spacing={2} justifyContent="center" alignItems="center">
           <Grid item xs className={classes.titleContainer}>
-            <div style={{ color: '#01025C', fontSize: 46, fontWeight: 'bold' }}>Meet Our Best Teachers</div>
+            <Zoom top>
+              <div style={{ color: '#01025C', fontSize: 46, fontWeight: 'bold' }}>Meet Our Best Teachers</div>
+            </Zoom>
           </Grid>
         </Grid>
         <AliceCarousel responsive={responsive} autoPlay mouseTracking disableButtonsControls autoPlayInterval={5000} infinite items={teachers} />

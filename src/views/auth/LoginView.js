@@ -12,7 +12,10 @@ import {
   makeStyles,
   Card
 } from '@material-ui/core';
+import cogoToast from 'cogo-toast';
+import { signIn } from 'src/utils/Api';
 import Page from 'src/components/Page';
+import StoreContext from 'src/context/index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LoginView = () => {
+  const { store, setStore } = React.useContext(StoreContext);
   const classes = useStyles();
   const navigate = useNavigate();
 
@@ -49,8 +53,28 @@ const LoginView = () => {
                 email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
                 password: Yup.string().max(255).required('Password is required')
               })}
-              onSubmit={() => {
-                navigate('/app/dashboard', { replace: true });
+              onSubmit={async (values) => {
+                signIn({
+                  userEmail: values.email,
+                  userPwd: values.password
+                }).then((res) => {
+                  if (typeof res === 'undefined') cogoToast.error('SignIn Failed', { position: 'bottom-right' });
+                  if (res.flag) {
+                    setStore({
+                      ...store,
+                      userInfo: {
+                        userEmail: res.data.u_email,
+                        userName: res.data.u_name,
+                        userAvatar: res.data.u_avatar
+                      }
+                    });
+                    setTimeout(() => {
+                      navigate('/user/home', { replace: true });
+                    }, 1500);
+                  } else {
+                    cogoToast.warn(res.msg, { position: 'bottom-right' });
+                  }
+                });
               }}
             >
               {({

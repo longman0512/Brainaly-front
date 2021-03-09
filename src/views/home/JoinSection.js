@@ -12,6 +12,7 @@ import {
 import {
   Users as UsersIcon,
 } from 'react-feather';
+import Fade from 'react-reveal/Fade';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,7 +60,9 @@ const JoinSection = () => {
       >
         <Grid item xs={12} container direction="column" spacing={2} justifyContent="center" alignItems="center">
           <Grid item xs className={classes.titleContainer}>
-            <div style={{ color: '#01025C', fontSize: 46, fontWeight: 'bold' }}>Change is the result of all true learning.</div>
+            <Fade top>
+              <div style={{ color: '#01025C', fontSize: 46, fontWeight: 'bold' }}>Change is the result of all true learning.</div>
+            </Fade>
           </Grid>
         </Grid>
         <Grid
@@ -69,12 +72,14 @@ const JoinSection = () => {
           xs={12}
           item
         >
-          <Card>
-            <CardMedia
-              className={classes.cardMedia}
-              image="/static/images/love-learn.png"
-            />
-          </Card>
+          <Fade left>
+            <Card>
+              <CardMedia
+                className={classes.cardMedia}
+                image="/static/images/love-learn.png"
+              />
+            </Card>
+          </Fade>
         </Grid>
         <Grid
           xl={6}
@@ -83,30 +88,32 @@ const JoinSection = () => {
           xs={12}
           item
         >
-          <Grid item xs={12} container direction="column" spacing={2} justifyContent="center">
-            <Grid item xs className={classes.titleContainer}>
-              <div style={{ color: '#01025C', fontSize: 46, fontWeight: 'bold' }}>Make learning Fun!</div>
-            </Grid>
-            <Grid item className={classes.contentContainer}>
-              <div style={{ color: '#5E2B66', fontSize: 36 }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros,
-                pulvinar facilisis justo mollis, auctor consequat urna. Morbi a bibendum metus.
-                Donec scelerisque sollicitudin enim eu venenatis. Duis tincidunt laoreet ex,
-                in pretium orci vestibulum eget. Class aptent taciti sociosqu ad litora torquent
-                per conubia nostra, per inceptos himenaeos.
-              </div>
-            </Grid>
-            <Grid container item className={classes.buttonContainer}>
-              <Grid
-                xl={4}
-                lg={4}
-                md={6}
-                xs={12}
-              >
-                <Button variant="contained" color="primary" endIcon={<UsersIcon />}>Join Us</Button>
+          <Fade right>
+            <Grid item xs={12} container direction="column" spacing={2} justifyContent="center">
+              <Grid item xs className={classes.titleContainer}>
+                <div style={{ color: '#01025C', fontSize: 46, fontWeight: 'bold' }}>Make learning Fun!</div>
+              </Grid>
+              <Grid item className={classes.contentContainer}>
+                <div style={{ color: '#5E2B66', fontSize: 36 }}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nisl eros,
+                  pulvinar facilisis justo mollis, auctor consequat urna. Morbi a bibendum metus.
+                  Donec scelerisque sollicitudin enim eu venenatis. Duis tincidunt laoreet ex,
+                  in pretium orci vestibulum eget. Class aptent taciti sociosqu ad litora torquent
+                  per conubia nostra, per inceptos himenaeos.
+                </div>
+              </Grid>
+              <Grid container item className={classes.buttonContainer}>
+                <Grid
+                  xl={4}
+                  lg={4}
+                  md={6}
+                  xs={12}
+                >
+                  <Button variant="contained" color="primary" endIcon={<UsersIcon />}>Join Us</Button>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          </Fade>
         </Grid>
       </Grid>
     </Box>

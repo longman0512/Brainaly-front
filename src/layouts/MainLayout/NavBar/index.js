@@ -35,27 +35,22 @@ const items = [
   {
     href: '/app/customers',
     icon: UsersIcon,
-    title: 'How It Works'
+    title: 'How it works'
   },
   {
     href: '/app/products',
     icon: ShoppingBagIcon,
-    title: 'Way To Play'
+    title: 'Way to play'
   },
   {
     href: '/app/account',
     icon: UsersIcon,
-    title: 'About Us'
+    title: 'About us'
   },
   {
     href: '/signup',
     icon: UserIcon,
-    title: 'Sign Up'
-  },
-  {
-    href: '/signin',
-    icon: UserIcon,
-    title: 'Sign In'
+    title: 'Join Us'
   }
 ];
 

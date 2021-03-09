@@ -9,6 +9,8 @@ import {
   CardMedia,
   Button
 } from '@material-ui/core';
+import Flip from 'react-reveal/Flip';
+import Fade from 'react-reveal/Fade';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -61,34 +63,36 @@ const IntroSection = () => {
           xs={12}
           item
         >
-          <Grid item xs={12} container direction="column" spacing={2} justifyContent="center">
-            <Grid item xs className={classes.titleContainer}>
-              <div style={{ color: '#01025C', fontSize: 46, fontWeight: 'bold' }}>The World Best Quiz Platform</div>
-            </Grid>
-            <Grid item className={classes.contentContainer}>
-              <div style={{ color: '#5E2B66', fontSize: 36 }}>
-                Lorem ipsum dolor shit aimsup eokco EWV woiekc sit lite dawgowm coro eoc. Wpo icosowk, owkoc oiwek fjoek ciowli colw kookwl.
-              </div>
-            </Grid>
-            <Grid container item className={classes.buttonContainer}>
-              <Grid
-                xl={4}
-                lg={4}
-                md={6}
-                xs={12}
-              >
-                <Button variant="outlined">How It Works</Button>
+          <Fade left>
+            <Grid item xs={12} container direction="column" spacing={2} justifyContent="center">
+              <Grid item xs className={classes.titleContainer}>
+                <div style={{ color: '#01025C', fontSize: 46, fontWeight: 'bold' }}>The World Best Quiz Platform</div>
               </Grid>
-              <Grid
-                xl={4}
-                lg={4}
-                md={6}
-                xs={12}
-              >
-                <Button variant="contained" color="secondary">Way To Play</Button>
+              <Grid item className={classes.contentContainer}>
+                <div style={{ color: '#5E2B66', fontSize: 36 }}>
+                  Lorem ipsum dolor shit aimsup eokco EWV woiekc sit lite dawgowm coro eoc. Wpo icosowk, owkoc oiwek fjoek ciowli colw kookwl.
+                </div>
+              </Grid>
+              <Grid container item className={classes.buttonContainer}>
+                <Grid
+                  xl={4}
+                  lg={4}
+                  md={6}
+                  xs={12}
+                >
+                  <Button variant="outlined">How It Works</Button>
+                </Grid>
+                <Grid
+                  xl={4}
+                  lg={4}
+                  md={6}
+                  xs={12}
+                >
+                  <Button variant="contained" color="secondary">Way To Play</Button>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          </Fade>
         </Grid>
         <Grid
           xl={6}
@@ -97,12 +101,14 @@ const IntroSection = () => {
           xs={12}
           item
         >
-          <Card>
-            <CardMedia
-              className={classes.cardMedia}
-              image="/static/images/classmates-working-together.png"
-            />
-          </Card>
+          <Flip left>
+            <Card>
+              <CardMedia
+                className={classes.cardMedia}
+                image="/static/images/classmates-working-together.png"
+              />
+            </Card>
+          </Flip>
         </Grid>
       </Grid>
     </Box>

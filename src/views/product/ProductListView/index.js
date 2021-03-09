@@ -30,7 +30,7 @@ const ProductList = () => {
   return (
     <Page
       className={classes.root}
-      title="Products"
+      title="Questions"
     >
       <Container maxWidth={false}>
         <Toolbar />
@@ -43,8 +43,8 @@ const ProductList = () => {
               <Grid
                 item
                 key={product.id}
-                lg={4}
-                md={6}
+                lg={12}
+                md={12}
                 xs={12}
               >
                 <ProductCard

@@ -1,19 +1,25 @@
-import React, { useState } from 'react';
+/* eslint-disable max-len */
+import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
   AppBar,
-  Badge,
+  // Badge,
   Box,
   Hidden,
   IconButton,
   Toolbar,
-  makeStyles
+  makeStyles,
+  Menu,
+  MenuItem
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import SettingsIcon from '@material-ui/icons/Settings';
+import PersonIcon from '@material-ui/icons/Person';
+import CardMembershipIcon from '@material-ui/icons/CardMembership';
 import NotificationsIcon from '@material-ui/icons/NotificationsOutlined';
-import InputIcon from '@material-ui/icons/Input';
+import { v4 as uuid } from 'uuid';
 import Logo from 'src/components/Logo';
 
 const useStyles = makeStyles(() => ({
@@ -21,6 +27,25 @@ const useStyles = makeStyles(() => ({
   avatar: {
     width: 60,
     height: 60
+  },
+  topBar: {
+    paddingLeft: 30,
+    height: 60,
+    display: 'flex',
+    justifyContent: 'center',
+    // background: 'linear-gradient(180deg, rgba(246,242,242,1) 10%, rgba(255,255,255,1) 51%, rgba(235,231,231,1) 100%)',
+    backgroundColor: 'white',
+    boxShadow: '0px 2px 2px -1px rgba(0,0,0,0.75)'
+  },
+  linkStyel: {
+    color: '#01025C',
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginLeft: 20
+  },
+  menuIcon: {
+    color: '#01025C',
+    marginRight: 20
   }
 }));
 
@@ -30,11 +55,28 @@ const TopBar = ({
   ...rest
 }) => {
   const classes = useStyles();
-  const [notifications] = useState([]);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const viewProfile = () => {
+    console.log('edit');
+    handleMenuClose();
+  };
+
+  const viewMembership = () => {
+    console.log('delete');
+    handleMenuClose();
+  };
   return (
     <AppBar
-      className={clsx(classes.root, className)}
+      className={clsx(classes.topBar, className)}
       elevation={0}
       {...rest}
     >
@@ -44,26 +86,66 @@ const TopBar = ({
         </RouterLink>
         <Box flexGrow={1} />
         <Hidden mdDown>
-          <IconButton color="inherit">
-            <Badge
-              badgeContent={notifications.length}
-              color="primary"
-              variant="dot"
-            >
-              <NotificationsIcon />
-            </Badge>
+          <IconButton
+            color="#01025C"
+          >
+
+            <NotificationsIcon color="#01025C" />
           </IconButton>
-          <IconButton color="inherit">
-            <InputIcon />
+          <IconButton
+            color="#01025C"
+            onClick={handleMenuClick}
+          >
+            <SettingsIcon />
           </IconButton>
+          <Menu
+            id="long-menu1"
+            anchorEl={anchorEl}
+            keepMounted
+            open={open}
+            onClose={handleMenuClose}
+          >
+            <MenuItem key={uuid} onClick={viewProfile}>
+              <PersonIcon className={classes.menuIcon} />
+              {' '}
+              Profile
+            </MenuItem>
+            <MenuItem key={uuid} onClick={viewMembership}>
+              <CardMembershipIcon className={classes.menuIcon} />
+              Manage Membership
+            </MenuItem>
+          </Menu>
         </Hidden>
         <Hidden lgUp>
           <IconButton
-            color="inherit"
+            color="#01025C"
             onClick={onMobileNavOpen}
           >
             <MenuIcon />
           </IconButton>
+          <IconButton
+            color="#01025C"
+            onClick={handleMenuClick}
+          >
+            <SettingsIcon />
+          </IconButton>
+          <Menu
+            id="long-menu2"
+            anchorEl={anchorEl}
+            keepMounted
+            open={open}
+            onClose={handleMenuClose}
+          >
+            <MenuItem key={uuid} onClick={viewProfile}>
+              <PersonIcon className={classes.menuIcon} />
+              {' '}
+              Profile
+            </MenuItem>
+            <MenuItem key={uuid} onClick={viewMembership}>
+              <CardMembershipIcon className={classes.menuIcon} />
+              Manage Membership
+            </MenuItem>
+          </Menu>
         </Hidden>
       </Toolbar>
     </AppBar>
