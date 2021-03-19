@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import React from 'react';
-import { Navigate, Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import DashboardLayout from 'src/layouts/DashboardLayout';
 import MainLayout from 'src/layouts/MainLayout';
 import AccountView from 'src/views/account/AccountView';
@@ -12,9 +12,15 @@ import ProductListView from 'src/views/product/ProductListView';
 import RegisterView from 'src/views/auth/RegisterView';
 import LoginView from 'src/views/auth/LoginView';
 import SettingsView from 'src/views/settings/SettingsView';
-import StoreContext from 'src/context/index';
+import NewQuiz from 'src/views/product/ProductListView/newQuiz';
+import Collections from 'src/views/collection';
+import EditCollection from 'src/views/collection/edit';
+import QuizLayout from './layouts/QuizLayout';
+import OnlyHeaderLayout from './layouts/OnlyHeaderLayout';
 
-const { store } = React.useContext(StoreContext);
+// import StoreContext from 'src/context/index';
+
+// const { store } = React.useContext(StoreContext);
 
 const routes = [
   {
@@ -45,14 +51,39 @@ const routes = [
     path: 'user',
     element: <DashboardLayout />,
     children: [
-      { path: 'home', element: store.userEmail ? <Redirect to="/signin" /> : <ProductListView /> },
+      { path: 'home', element: <ProductListView /> },
+      { path: 'signup', element: <RegisterView /> },
+      { path: 'collections', element: <Collections /> },
+      { path: 'signin', element: <LoginView /> },
+      { path: '404', element: <NotFoundView /> },
+      { path: '/', element: <HomeView /> },
+      { path: '*', element: <Navigate to="/404" /> }
+    ]
+  },
+  {
+    path: 'user',
+    element: <QuizLayout />,
+    children: [
+      { path: 'new', element: <NewQuiz /> },
       { path: 'signup', element: <RegisterView /> },
       { path: 'signin', element: <LoginView /> },
       { path: '404', element: <NotFoundView /> },
       { path: '/', element: <HomeView /> },
       { path: '*', element: <Navigate to="/404" /> }
     ]
-  }
+  },
+  {
+    path: 'collection',
+    element: <OnlyHeaderLayout />,
+    children: [
+      { path: 'edit', element: <EditCollection /> },
+      { path: 'signup', element: <RegisterView /> },
+      { path: 'signin', element: <LoginView /> },
+      { path: '404', element: <NotFoundView /> },
+      { path: '/', element: <HomeView /> },
+      { path: '*', element: <Navigate to="/404" /> }
+    ]
+  },
 ];
 
 export default routes;

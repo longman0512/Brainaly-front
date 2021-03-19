@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import Page from 'src/components/Page';
-import { getQuizList } from 'src/utils/Api';
+import { getCollectionList } from 'src/utils/Api';
 import Toolbar from './Toolbar';
 import ProductCard from './ProductCard';
 
@@ -19,7 +19,10 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: theme.spacing(3)
   },
   productCard: {
-    height: '100%'
+    height: '100%',
+    '&:hover': {
+      animation: '0.25s ease 0s 1 normal none running'
+    }
   }
 }));
 const ProductList = () => {
@@ -27,14 +30,14 @@ const ProductList = () => {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     async function getList() {
-      await getQuizList().then((res) => {
+      await getCollectionList().then((res) => {
         const productsArray = [];
         for (let i = 0; i < res.result.length; i++) {
           const newData = {
-            title: res.result[i].q_name,
-            length: JSON.parse(res.result[i].q_content).length,
-            description: res.result[i].q_description,
-            id: res.result[i].q_uid
+            title: res.result[i].col_name,
+            media: res.result[i].col_image === '' ? '/static/collection.png' : `http://localhost:3001/upload/${res.result[i].col_image}`,
+            description: res.result[i].col_description,
+            id: res.result[i].col_uid
           };
           productsArray.push(newData);
           console.log(res.result[i]);

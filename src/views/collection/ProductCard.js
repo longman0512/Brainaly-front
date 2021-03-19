@@ -36,7 +36,8 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(3)
   },
   quAvatar: {
-    width: 100
+    width: 150,
+    borderRadius: 5
   },
   hambergerContainer: {
     display: 'flex',
@@ -65,7 +66,7 @@ const ProductCard = ({ className, product, ...rest }) => {
   const editQu = (id) => {
     console.log(id);
     // window.open(`/user/new?id=${id}`, '_blank');
-    navigate(`/user/new?id=${id}`, { replace: true });
+    navigate(`/collection/edit?id=${id}`, { replace: true });
     handleMenuClose();
   };
   const deleteQu = () => {

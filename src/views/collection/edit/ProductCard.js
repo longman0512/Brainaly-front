@@ -3,22 +3,16 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
   Avatar,
-  Box,
+  // Box,
   Card,
   CardContent,
-  Divider,
   Grid,
   Typography,
   makeStyles,
-  Button,
   Menu,
   MenuItem
 } from '@material-ui/core';
-import { useNavigate } from 'react-router-dom';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Zoom from 'react-reveal/Zoom';
 
@@ -36,25 +30,27 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(3)
   },
   quAvatar: {
-    width: 100
+    width: '100%',
+    height: 'auto',
+    maxHeight: 200
   },
   hambergerContainer: {
     display: 'flex',
     justifyContent: 'flex-end'
   },
   menuItem: {
-    width: 100
   },
   menuIcon: {
     marginRight: theme.spacing(1)
   }
 }));
 
-const ProductCard = ({ className, product, ...rest }) => {
+const ProductCard = ({
+  className, product, indexId, ...rest
+}) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const navigate = useNavigate();
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -62,14 +58,8 @@ const ProductCard = ({ className, product, ...rest }) => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-  const editQu = (id) => {
-    console.log(id);
-    // window.open(`/user/new?id=${id}`, '_blank');
-    navigate(`/user/new?id=${id}`, { replace: true });
-    handleMenuClose();
-  };
-  const deleteQu = () => {
-    console.log('delete');
+  const deleteQu = (index, id) => {
+    console.log(index, id);
     handleMenuClose();
   };
   return (
@@ -86,30 +76,26 @@ const ProductCard = ({ className, product, ...rest }) => {
           >
             <Grid
               item
-              xl={2}
-              lg={2}
-              md={2}
-              xs={12}
+              xl={3}
+              lg={3}
+              md={3}
+              sm={3}
+              xs={5}
             >
-              <Box
-                display="flex"
-                justifyContent="flex-start"
-                mb={3}
-              >
-                <Avatar
-                  alt="Product"
-                  src={product.media}
-                  variant="square"
-                  className={clsx(classes.quAvatar, className)}
-                />
-              </Box>
+              <Avatar
+                alt="Product"
+                src={product.media === null ? '/static/collection.png' : `http://localhost:3001/upload/${product.media}`}
+                variant="square"
+                className={clsx(classes.quAvatar, className)}
+              />
             </Grid>
             <Grid
               item
-              xl={10}
-              lg={10}
-              md={10}
-              xs={12}
+              xl={9}
+              lg={9}
+              md={9}
+              sm={9}
+              xs={7}
               container
               justifyContent="space-between"
               flexDirection="row"
@@ -156,70 +142,18 @@ const ProductCard = ({ className, product, ...rest }) => {
                   onClose={handleMenuClose}
                 >
                   <MenuItem
-                    key={product.id}
+                    key={`${product.id}1`}
                     className={classes.menuItem}
-                    onClick={() => { editQu(product.id); }}
+                    onClick={() => deleteQu(indexId, product.id)}
                   >
-                    <EditIcon className={classes.menuIcon} />
-                    {' '}
-                    Edit
-                  </MenuItem>
-                  <MenuItem key={`${product.id}1`} className={classes.menuItem} onClick={deleteQu}>
                     <DeleteIcon className={classes.menuIcon} />
-                    Delete
+                    Delete from collection
                   </MenuItem>
                 </Menu>
               </Grid>
             </Grid>
           </Grid>
         </CardContent>
-        <Box flexGrow={1} />
-        <Divider />
-        <Box p={2}>
-          <Grid
-            container
-            justify="space-between"
-            spacing={2}
-          >
-            <Grid
-              className={classes.statsItem}
-              item
-            >
-              <AccessTimeIcon
-                className={classes.statsIcon}
-                color="action"
-              />
-              <Typography
-                color="textSecondary"
-                display="inline"
-                variant="body2"
-              >
-                Created at 2021-02-03
-              </Typography>
-              <PlayArrowIcon
-                className={classes.statsIcon}
-                color="action"
-              />
-              <Typography
-                color="textSecondary"
-                display="inline"
-                variant="body2"
-              >
-                {product.totalDownloads}
-                {' '}
-                Plays
-              </Typography>
-            </Grid>
-            <Grid
-              className={classes.statsItem}
-              item
-            >
-              <Button variant="contained" color="primary">
-                Play
-              </Button>
-            </Grid>
-          </Grid>
-        </Box>
       </Card>
     </Zoom>
   );
@@ -227,7 +161,8 @@ const ProductCard = ({ className, product, ...rest }) => {
 
 ProductCard.propTypes = {
   className: PropTypes.string,
-  product: PropTypes.object.isRequired
+  product: PropTypes.object.isRequired,
+  indexId: PropTypes.number
 };
 
 export default ProductCard;
