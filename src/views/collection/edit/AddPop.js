@@ -121,7 +121,7 @@ export default function AddDialog({
   const [quizes, setQuizes] = useState([]);
 
   async function handleNew() {
-    const quizString = JSON.stringify(collection.quizList);
+    const quizString = JSON.stringify(quizes);
     const data = { uid: id, quiz: quizString };
     const preStore = collection;
     await updateColQuiz(data).then((res) => {
@@ -135,7 +135,7 @@ export default function AddDialog({
       description: preStore.description,
       title: preStore.title,
       product: [...aaa],
-      quizList: preStore.quizList
+      quizList: quizes
     });
     handleClose();
   }
@@ -169,6 +169,7 @@ export default function AddDialog({
         }
         setProducts(productsArray);
         setProList(prolistArray);
+        setQuizes(collection.quizList);
       });
     }
     getList();
@@ -197,9 +198,10 @@ export default function AddDialog({
   }
   function handleClick(ad, selected, index) {
     const preStore = collection;
-    const newProduct = [...preStore.quizList];
+    const newProduct = [...quizes];
+    console.log(newProduct);
     let trueFalse = false;
-    preStore.quizList.map((item) => {
+    quizes.map((item) => {
       if (ad === item.id) {
         trueFalse = true;
       }
@@ -214,13 +216,13 @@ export default function AddDialog({
       newProduct.push({ id: ad });
       newArray = [...newProduct];
     }
-    setCollection({
-      image: preStore.image,
-      description: preStore.description,
-      title: preStore.title,
-      product: preStore.product,
-      quizList: newArray
-    });
+    // setCollection({
+    //   image: preStore.image,
+    //   description: preStore.description,
+    //   title: preStore.title,
+    //   product: preStore.product,
+    //   quizList: preStore.quizList
+    // });
     const current = [...products];
     const providerArray = {
       title: current[index].title,
