@@ -198,7 +198,6 @@ export default function AddDialog({
   function handleClick(ad, selected, index) {
     const preStore = collection;
     const newProduct = [...preStore.quizList];
-    console.log(newProduct);
     let trueFalse = false;
     preStore.quizList.map((item) => {
       if (ad === item.id) {
