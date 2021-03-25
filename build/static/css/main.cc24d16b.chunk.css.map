@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack://src/App.css"],"names":[],"mappings":"AAAA,MACE,qBAAsB,CACtB,6DACF","file":"main.cc24d16b.chunk.css","sourcesContent":["#root {\n  font-family: 'Calibri';\n  background: url('http://127.0.0.1/static/images/background.png');\n}"]}

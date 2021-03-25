@@ -7,7 +7,7 @@
 import Axios from 'axios';
 import cogoToast from 'cogo-toast';
 
-Axios.defaults.baseURL = 'http://127.0.0.1:3001/';
+Axios.defaults.baseURL = 'http://107.191.49.240:3001/';
 
 export async function signUp(userInfo) {
   const DATA = await Axios.post('signup', userInfo).then((res) => {
