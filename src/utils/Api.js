@@ -7,7 +7,7 @@
 import Axios from 'axios';
 import cogoToast from 'cogo-toast';
 
-Axios.defaults.baseURL = 'http://127.0.0.1:3001/';
+Axios.defaults.baseURL = 'http://localhost:3001/';
 
 export async function signUp(userInfo) {
   const DATA = await Axios.post('signup', userInfo).then((res) => {
@@ -58,8 +58,8 @@ export async function getQuizById(id) {
   });
   return DATA;
 }
-export async function getQuizList() {
-  const DATA = await Axios.post('getquizlist').then((res) => {
+export async function getQuizList(id) {
+  const DATA = await Axios.post('getquizlist', id).then((res) => {
     if (res.status === 200) {
       return res.data;
     }
@@ -86,7 +86,15 @@ export async function imageUpload(file) {
   });
   return res;
 }
-
+export async function deleteQuiz(id) {
+  const DATA = await Axios.post('deletequiz', id).then((res) => {
+    if (res.status === 200) {
+      return res.data;
+    }
+    return res.data;
+  });
+  return DATA;
+}
 // =============Collection alalal
 
 export async function newCollection(data) {
@@ -101,8 +109,9 @@ export async function newCollection(data) {
   });
   return DATA;
 }
-export async function getCollectionList() {
-  const DATA = await Axios.post('getcollist').then((res) => {
+export async function getCollectionList(id) {
+  console.log(id);
+  const DATA = await Axios.post('getcollist', id).then((res) => {
     if (res.status === 200) {
       return res.data;
     }
@@ -135,6 +144,57 @@ export async function updateColData(data) {
       return res.data.data;
     }
     cogoToast.warn('Add Failed', { position: 'bottom-right' });
+    return res.data.data;
+  });
+  return DATA;
+}
+
+// ============= Class sectioin
+export async function newClass(data) {
+  const DATA = await Axios.post('newclass', data).then((res) => {
+    if (res.status === 200) {
+      return res.data;
+    }
+    cogoToast.warn('Add Failed', { position: 'bottom-right' });
+    return res.data;
+  }).catch((err) => {
+    cogoToast.warn(err, { position: 'bottom-right' });
+  });
+  return DATA;
+}
+export async function getClassList(id) {
+  const DATA = await Axios.post('getclasslist', id).then((res) => {
+    if (res.status === 200) {
+      return res.data;
+    }
+    return res.data;
+  });
+  return DATA;
+}
+export async function getClassById(id) {
+  const DATA = await Axios.post('getclassbyid', id).then((res) => {
+    if (res.status === 200) {
+      return res.data.data;
+    }
+    return res.data.data;
+  });
+  return DATA;
+}
+export async function updateClassData(data) {
+  const DATA = await Axios.post('updateclass', data).then((res) => {
+    if (res.status === 200) {
+      return res.data.data;
+    }
+    cogoToast.warn('Add Failed', { position: 'bottom-right' });
+    return res.data.data;
+  });
+  return DATA;
+}
+export async function getStudentById(id) {
+  const DATA = await Axios.post('getstubyid', id).then((res) => {
+    if (res.status === 200) {
+      return res.data.data;
+    }
     return res.data.data;
   });
   return DATA;

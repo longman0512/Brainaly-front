@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import {
@@ -12,7 +12,12 @@ import {
   makeStyles,
   Button,
   Menu,
-  MenuItem
+  MenuItem,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  DialogContentText
 } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
@@ -21,6 +26,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Zoom from 'react-reveal/Zoom';
+import { deleteQuiz } from 'src/utils/Api';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,7 +42,8 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(3)
   },
   quAvatar: {
-    width: 100
+    width: 150,
+    borderRadius: 5
   },
   hambergerContainer: {
     display: 'flex',
@@ -50,9 +57,13 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const ProductCard = ({ className, product, ...rest }) => {
+const ProductCard = ({
+  className, product, handleRefresh, ...rest
+}) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
   const handleMenuClick = (event) => {
@@ -64,170 +75,208 @@ const ProductCard = ({ className, product, ...rest }) => {
   };
   const editQu = (id) => {
     console.log(id);
-    // window.open(`/user/new?id=${id}`, '_blank');
-    navigate(`/user/new?id=${id}`, { replace: true });
+    // window.open(`/teacher/new?id=${id}`, '_blank');
+    navigate(`/teacher/new?id=${id}`, { replace: true });
     handleMenuClose();
   };
-  const deleteQu = () => {
-    console.log('delete');
+  const deleteQu = (id) => {
+    setDeleteId(id);
+    setDialogOpen(true);
     handleMenuClose();
   };
+  function handleClose() {
+    setDeleteId('');
+    setDialogOpen(false);
+  }
+  async function handleDelete() {
+    console.log(deleteId);
+    await deleteQuiz({ uid: deleteId }).then((res) => {
+      console.log(res);
+      handleRefresh();
+      setDialogOpen(false);
+    });
+  }
   return (
-    <Zoom>
-      <Card
-        className={clsx(classes.root, className)}
-        {...rest}
+    <div>
+      <Dialog
+        open={dialogOpen}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
       >
-        <CardContent>
-          <Grid
-            container
-            flexDirection="row"
-            spacing={2}
-          >
+        <DialogTitle id="alert-dialog-title">Really?</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Let Google help apps determine location. This means sending anonymous location data to
+            Google, even when no apps are running.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary" variant="contained">
+            Cancel
+          </Button>
+          <Button onClick={handleDelete} color="secondary" variant="contained" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Zoom>
+        <Card
+          className={clsx(classes.root, className)}
+          {...rest}
+        >
+          <CardContent>
             <Grid
-              item
-              xl={2}
-              lg={2}
-              md={2}
-              xs={12}
-            >
-              <Box
-                display="flex"
-                justifyContent="flex-start"
-                mb={3}
-              >
-                <Avatar
-                  alt="Product"
-                  src={product.media}
-                  variant="square"
-                  className={clsx(classes.quAvatar, className)}
-                />
-              </Box>
-            </Grid>
-            <Grid
-              item
-              xl={10}
-              lg={10}
-              md={10}
-              xs={12}
               container
-              justifyContent="space-between"
               flexDirection="row"
+              spacing={2}
             >
               <Grid
                 item
-                xl={11}
-                lg={11}
-                md={11}
-                xs={11}
+                xl={2}
+                lg={2}
+                md={2}
+                xs={12}
               >
-                <Typography
-                  align="left"
-                  color="textPrimary"
-                  gutterBottom
-                  variant="h4"
+                <Box
+                  display="flex"
+                  justifyContent="flex-start"
+                  mb={3}
                 >
-                  {product.title}
-                </Typography>
-                <Typography
-                  align="left"
-                  color="textPrimary"
-                  variant="body1"
-                >
-                  {product.description}
-                </Typography>
+                  <Avatar
+                    alt="Product"
+                    src={product.media}
+                    variant="square"
+                    className={clsx(classes.quAvatar, className)}
+                  />
+                </Box>
               </Grid>
               <Grid
                 item
-                xl={1}
-                lg={1}
-                md={1}
-                xs={1}
-                className={classes.hambergerContainer}
+                xl={10}
+                lg={10}
+                md={10}
+                xs={12}
+                container
+                justifyContent="space-between"
+                flexDirection="row"
               >
-                <MoreVertIcon
-                  onClick={handleMenuClick}
-                />
-                <Menu
-                  id="long-menu"
-                  anchorEl={anchorEl}
-                  keepMounted
-                  open={open}
-                  onClose={handleMenuClose}
+                <Grid
+                  item
+                  xl={11}
+                  lg={11}
+                  md={11}
+                  xs={11}
                 >
-                  <MenuItem
-                    key={product.id}
-                    className={classes.menuItem}
-                    onClick={() => { editQu(product.id); }}
+                  <Typography
+                    align="left"
+                    color="textPrimary"
+                    gutterBottom
+                    variant="h4"
                   >
-                    <EditIcon className={classes.menuIcon} />
-                    {' '}
-                    Edit
-                  </MenuItem>
-                  <MenuItem key={`${product.id}1`} className={classes.menuItem} onClick={deleteQu}>
-                    <DeleteIcon className={classes.menuIcon} />
-                    Delete
-                  </MenuItem>
-                </Menu>
+                    {product.title}
+                  </Typography>
+                  <Typography
+                    align="left"
+                    color="textPrimary"
+                    variant="body1"
+                  >
+                    {product.description}
+                  </Typography>
+                </Grid>
+                <Grid
+                  item
+                  xl={1}
+                  lg={1}
+                  md={1}
+                  xs={1}
+                  className={classes.hambergerContainer}
+                >
+                  <MoreVertIcon
+                    onClick={handleMenuClick}
+                  />
+                  <Menu
+                    id="long-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={open}
+                    onClose={handleMenuClose}
+                  >
+                    <MenuItem
+                      key={product.id}
+                      className={classes.menuItem}
+                      onClick={() => { editQu(product.id); }}
+                    >
+                      <EditIcon className={classes.menuIcon} />
+                      {' '}
+                      Edit
+                    </MenuItem>
+                    <MenuItem key={`${product.id}1`} className={classes.menuItem} onClick={() => { deleteQu(product.id); }}>
+                      <DeleteIcon className={classes.menuIcon} />
+                      Delete
+                    </MenuItem>
+                  </Menu>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </CardContent>
-        <Box flexGrow={1} />
-        <Divider />
-        <Box p={2}>
-          <Grid
-            container
-            justify="space-between"
-            spacing={2}
-          >
+          </CardContent>
+          <Box flexGrow={1} />
+          <Divider />
+          <Box p={2}>
             <Grid
-              className={classes.statsItem}
-              item
+              container
+              justify="space-between"
+              spacing={2}
             >
-              <AccessTimeIcon
-                className={classes.statsIcon}
-                color="action"
-              />
-              <Typography
-                color="textSecondary"
-                display="inline"
-                variant="body2"
+              <Grid
+                className={classes.statsItem}
+                item
               >
-                Created at 2021-02-03
-              </Typography>
-              <PlayArrowIcon
-                className={classes.statsIcon}
-                color="action"
-              />
-              <Typography
-                color="textSecondary"
-                display="inline"
-                variant="body2"
+                <AccessTimeIcon
+                  className={classes.statsIcon}
+                  color="action"
+                />
+                <Typography
+                  color="textSecondary"
+                  display="inline"
+                  variant="body2"
+                >
+                  Created at 2021-02-03
+                </Typography>
+                <PlayArrowIcon
+                  className={classes.statsIcon}
+                  color="action"
+                />
+                <Typography
+                  color="textSecondary"
+                  display="inline"
+                  variant="body2"
+                >
+                  {product.totalDownloads}
+                  {' '}
+                  Plays
+                </Typography>
+              </Grid>
+              <Grid
+                className={classes.statsItem}
+                item
               >
-                {product.totalDownloads}
-                {' '}
-                Plays
-              </Typography>
+                <Button variant="contained" color="primary">
+                  Play
+                </Button>
+              </Grid>
             </Grid>
-            <Grid
-              className={classes.statsItem}
-              item
-            >
-              <Button variant="contained" color="primary">
-                Play
-              </Button>
-            </Grid>
-          </Grid>
-        </Box>
-      </Card>
-    </Zoom>
+          </Box>
+        </Card>
+      </Zoom>
+    </div>
   );
 };
 
 ProductCard.propTypes = {
   className: PropTypes.string,
-  product: PropTypes.object.isRequired
+  product: PropTypes.object.isRequired,
+  handleRefresh: PropTypes.func
 };
 
 export default ProductCard;

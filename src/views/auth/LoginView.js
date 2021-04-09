@@ -46,8 +46,8 @@ const LoginView = () => {
           <Card maxWidth="sm" style={{ padding: 30 }}>
             <Formik
               initialValues={{
-                email: 'demo@devias.io',
-                password: 'Password123'
+                email: 'limonovdev@mail.ru',
+                password: 'asdwds3210'
               }}
               validationSchema={Yup.object().shape({
                 email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
@@ -58,7 +58,9 @@ const LoginView = () => {
                   userEmail: values.email,
                   userPwd: values.password
                 }).then((res) => {
-                  if (typeof res === 'undefined') cogoToast.error('SignIn Failed', { position: 'bottom-right' });
+                  if (typeof res === 'undefined') {
+                    cogoToast.error('SignIn Failed', { position: 'bottom-right' });
+                  }
                   if (res.flag) {
                     setStore({
                       ...store,
@@ -69,7 +71,22 @@ const LoginView = () => {
                       }
                     });
                     setTimeout(() => {
-                      navigate('/user/home', { replace: true });
+                      console.log(res);
+                      if (res.data.u_type === 'teacher') {
+                        const userData = {
+                          userId: res.data.u_id,
+                          userEmail: res.data.u_email,
+                          userName: res.data.u_name,
+                          userAvatar: res.data.u_avatar
+                        };
+                        localStorage.setItem('brainaly_user', JSON.stringify(userData));
+                        navigate('/teacher/home', { replace: true });
+                      } else if (res.data.u_type === 'student') {
+                        navigate('/student/home', { replace: true });
+                        cogoToast.warn('Go to student Panel', { position: 'bottom-right' });
+                      } else {
+                        // navigate('/', { replace: true });
+                      }
                     }, 1500);
                   } else {
                     cogoToast.warn(res.msg, { position: 'bottom-right' });

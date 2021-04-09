@@ -15,8 +15,6 @@ import {
   ShoppingBag as ShoppingBagIcon,
   Users as UsersIcon
 } from 'react-feather';
-import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
-import ChatIcon from '@material-ui/icons/Chat';
 import NavItem from './NavItem';
 
 const user = {
@@ -27,24 +25,14 @@ const user = {
 
 const items = [
   {
-    href: '/teacher/home',
+    href: '/student/home',
     icon: ShoppingBagIcon,
-    title: 'Questions'
+    title: 'Dashboard'
   },
   {
-    href: '/teacher/collections',
-    icon: LibraryBooksIcon,
-    title: 'Collections'
-  },
-  {
-    href: '/teacher/class',
+    href: '/student/joinclass',
     icon: UsersIcon,
-    title: 'Classes'
-  },
-  {
-    href: '/teacher/chat',
-    icon: ChatIcon,
-    title: 'Chat Room'
+    title: 'Join Class'
   }
 ];
 
@@ -92,7 +80,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           className={classes.avatar}
           component={RouterLink}
           src={user.avatar}
-          to="/teacher/account"
+          to="/app/account"
         />
         <Typography
           className={classes.name}

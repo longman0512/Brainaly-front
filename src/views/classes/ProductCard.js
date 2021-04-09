@@ -73,7 +73,7 @@ const ProductCard = ({ className, product, ...rest }) => {
   const editQu = (id) => {
     console.log(id);
     // window.open(`/teacher/new?id=${id}`, '_blank');
-    navigate(`/collection/edit?id=${id}`, { replace: true });
+    navigate(`/class/edit?id=${id}`, { replace: true });
     handleMenuClose();
   };
   const deleteQu = (id) => {
@@ -233,7 +233,9 @@ const ProductCard = ({ className, product, ...rest }) => {
                   display="inline"
                   variant="body2"
                 >
-                  Created at 2021-02-03
+                  Create at
+                  {' '}
+                  {product.created}
                 </Typography>
                 <PlayArrowIcon
                   className={classes.statsIcon}
@@ -244,18 +246,18 @@ const ProductCard = ({ className, product, ...rest }) => {
                   display="inline"
                   variant="body2"
                 >
-                  {product.totalDownloads}
+                  Student Number
                   {' '}
-                  Plays
+                  {product.studentNum}
                 </Typography>
               </Grid>
               <Grid
                 className={classes.statsItem}
                 item
               >
-                <Button variant="contained" color="primary">
+                {/* <Button variant="contained" color="primary">
                   Play
-                </Button>
+                </Button> */}
               </Grid>
             </Grid>
           </Box>

@@ -96,14 +96,12 @@ const TopBar = ({
             Sign In
           </RouterLink> */}
         </Hidden>
-        <Hidden lgUp>
-          <IconButton
-            color="primary"
-            onClick={onMobileNavOpen}
-          >
-            <MenuIcon />
-          </IconButton>
-        </Hidden>
+        <IconButton
+          color="primary"
+          onClick={onMobileNavOpen}
+        >
+          <MenuIcon />
+        </IconButton>
       </Toolbar>
     </AppBar>
   );

@@ -70,7 +70,6 @@ const TopBar = ({
 
   const viewProfile = () => {
     console.log('edit');
-    navigate('/teacher/account', { replace: true });
     handleMenuClose();
   };
 

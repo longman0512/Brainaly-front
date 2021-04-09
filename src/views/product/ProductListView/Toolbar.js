@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -17,12 +18,13 @@ import {
   DialogContent,
   DialogContentText,
   CircularProgress,
-  Typography
+  Typography,
+  Grid
 } from '@material-ui/core';
 import { Search as SearchIcon } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import StoreContext from 'src/context/index';
-import { newQuiz } from 'src/utils/Api';
+import { newQuiz, imageUpload } from 'src/utils/Api';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -50,7 +52,37 @@ const useStyles = makeStyles((theme) => ({
   quizDesc: {
     marginTop: 15,
     width: '100%'
-  }
+  },
+  coverImage: {
+    marginLeft: 20,
+    width: '100%',
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: 0,
+      marginTop: 15
+    },
+    [theme.breakpoints.up('sm')]: {
+      marginLeft: 20,
+    }
+  },
+  coverImg: {
+    borderRadius: 5,
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      height: 'auto',
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: 250,
+      height: 180,
+    }
+  },
+  cancelImage: {
+    position: 'relative',
+    marginTop: -50,
+    marginLeft: -90
+  },
+  fileModal: {
+    display: 'none'
+  },
 }));
 
 const Toolbar = ({ className, ...rest }) => {
@@ -63,6 +95,8 @@ const Toolbar = ({ className, ...rest }) => {
   const [newTitle, setNewTitle] = useState('');
   const [briefValid, setBriefValid] = useState('none');
   const [description, setDescription] = useState('');
+  const [imageSource, setImageSource] = useState('');
+  const [coverImageName, setCoverImageName] = useState('');
   const handleClose = () => {
     setOpen(false);
     setIsLoading(false);
@@ -111,25 +145,43 @@ const Toolbar = ({ className, ...rest }) => {
         point: 2
       }];
       const newData = JSON.stringify(item);
+      const user = JSON.parse(localStorage.getItem('brainaly_user'));
       const data = {
         uid: uniqueID(),
         content: newData,
         title: newTitle,
-        description
+        description,
+        userid: user.userId,
+        cover: coverImageName
       };
+      console.log(data);
       await newQuiz(data).then((res) => {
         console.log('data', res);
         setStore({
           ...store,
           items: item
         });
-        navigate(`/user/new?id=${res.data.uid}`, { replace: true });
+        navigate(`/teacher/new?id=${res.data.uid}`, { replace: true });
       });
     }
   };
   async function goAddNewQuiz() {
     setOpen(true);
   }
+  async function handleImageChange(e) {
+    if (e.target.files[0]) {
+      console.log(e.target.files[0]);
+      e.preventDefault();
+      const reader = URL.createObjectURL(e.target.files[0]);
+      setImageSource(reader);
+      await imageUpload(e.target.files[0]).then((res) => {
+        setCoverImageName(res.data.filename);
+      });
+    }
+  }
+  const imageSelect = () => {
+    document.getElementById('image_select').click();
+  };
   return (
     <div
       className={clsx(classes.root, className)}
@@ -145,36 +197,52 @@ const Toolbar = ({ className, ...rest }) => {
       >
         <DialogTitle id="alert-dialog-title">Create a New Quiz</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            <TextField
-              variant="outlined"
-              className={classes.quizName}
-              label="Quiz Name"
-              value={newTitle}
-              id="outlined-basic"
-              onChange={(event) => {
-                setNewTitle(event.target.value);
-              }}
-            />
-            <Typography color="warnred" variant="body2" className={classes[valid]}>
-              * Please enter at least 3 characters
-            </Typography>
-            <TextField
-              variant="outlined"
-              className={classes.quizDesc}
-              label="Description"
-              value={description}
-              id="outlined-basic"
-              multiline
-              rows={3}
-              onChange={(event) => {
-                setDescription(event.target.value);
-              }}
-            />
-            <Typography color="warnred" variant="body2" className={classes[briefValid]}>
-              * Please enter at least 10 characters
-            </Typography>
-          </DialogContentText>
+          <Grid container xs={12}>
+            <Grid item xs={12} sm={6} style={{ marginTop: 20 }}>
+              <TextField
+                variant="outlined"
+                className={classes.quizName}
+                label="Collection Name"
+                value={newTitle}
+                id="outlined-basic"
+                onChange={(event) => {
+                  setNewTitle(event.target.value);
+                }}
+              />
+              <Typography color="warnred" variant="body2" className={classes[valid]}>
+                * Please enter at least 3 characters
+              </Typography>
+              <TextField
+                variant="outlined"
+                className={classes.quizDesc}
+                label="Description"
+                value={description}
+                id="outlined-basic"
+                multiline
+                rows={4}
+                onChange={(event) => {
+                  setDescription(event.target.value);
+                }}
+              />
+              <Typography color="warnred" variant="body2" className={classes[briefValid]}>
+                * Please enter at least 10 characters
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <div className={classes.coverImage}>
+                <input type="file" id="image_select" onChange={handleImageChange} className={classes.fileModal} />
+                <Typography variant="body1">
+                  Cover image
+                </Typography>
+                <img
+                  alt="Cover Image"
+                  src={imageSource === '' ? '/static/collection.png' : imageSource}
+                  className={classes.coverImg}
+                />
+                <Button color="secondary" variant="contained" onClick={imageSelect} className={classes.cancelImage}>Change</Button>
+              </div>
+            </Grid>
+          </Grid>
 
         </DialogContent>
         <DialogActions>

@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import Page from 'src/components/Page';
-import { getCollectionList } from 'src/utils/Api';
+import { getClassList } from 'src/utils/Api';
 import Toolbar from './Toolbar';
 import ProductCard from './ProductCard';
 
@@ -25,21 +25,25 @@ const useStyles = makeStyles((theme) => ({
     }
   }
 }));
-const ProductList = () => {
+const ClassView = () => {
   const classes = useStyles();
   const [products, setProducts] = useState([]);
   useEffect(() => {
     async function getList() {
       const user = JSON.parse(localStorage.getItem('brainaly_user'));
-      await getCollectionList({ userid: user.userId }).then((res) => {
-        const productsArray = [];
+      await getClassList({ userid: user.userId }).then((res) => {
         console.log(res);
+        const productsArray = [];
         for (let i = 0; i < res.result.length; i++) {
+          const createDate = new Date(res.result[i].cl_createdAt);
+          const students = JSON.parse(res.result[i].cl_students);
           const newData = {
-            title: res.result[i].col_name,
-            media: res.result[i].col_image === '' ? '/static/collection.png' : `http://localhost:3001/upload/${res.result[i].col_image}`,
-            description: res.result[i].col_description,
-            id: res.result[i].col_uid
+            title: res.result[i].cl_name,
+            media: res.result[i].cl_cover === '' ? '/static/cllection.png' : `http://localhost:3001/upload/${res.result[i].cl_cover}`,
+            description: res.result[i].cl_description,
+            id: res.result[i].cl_uid,
+            studentNum: students.length,
+            created: `${createDate.getFullYear()}-${createDate.getMonth() + 1}-${createDate.getDate()}`
           };
           productsArray.push(newData);
           console.log(res.result[i]);
@@ -93,4 +97,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default ClassView;

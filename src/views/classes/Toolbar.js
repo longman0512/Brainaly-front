@@ -24,7 +24,7 @@ import {
 import { Search as SearchIcon } from 'react-feather';
 import { useNavigate } from 'react-router-dom';
 import StoreContext from 'src/context/index';
-import { imageUpload, newCollection } from 'src/utils/Api';
+import { imageUpload, newClass } from 'src/utils/Api';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -119,22 +119,22 @@ const Toolbar = ({ className, ...rest }) => {
     } else {
       setValid('none');
       setBriefValid('none');
-      setIsLoading(true);
       const user = JSON.parse(localStorage.getItem('brainaly_user'));
       const data = {
         uid: uniqueID(),
         title: newTitle,
         description,
         cover: coverImageName,
-        quiz: '[]',
+        students: '[]',
         userid: user.userId
       };
-      await newCollection(data).then((res) => {
-        console.log(res.data.uid);
-        navigate(`/collection/edit?id=${res.data.uid}`, { replace: true });
+      await newClass(data).then((res) => {
+        // console.log(res.data.uid);
+        navigate(`/class/edit?id=${res.data.uid}`, { replace: true });
       });
-      console.log(data);
-      setIsLoading(false);
+      setOpen(false);
+      setNewTitle('');
+      setCoverImageName('');
     }
   };
   async function goAddNewQuiz() {
@@ -167,7 +167,7 @@ const Toolbar = ({ className, ...rest }) => {
         disableBackdropClick
         disableEscapeKeyDown
       >
-        <DialogTitle id="alert-dialog-title">Create a New Collection</DialogTitle>
+        <DialogTitle id="alert-dialog-title">Create class</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             <Grid container xs={12}>
@@ -175,7 +175,7 @@ const Toolbar = ({ className, ...rest }) => {
                 <TextField
                   variant="outlined"
                   className={classes.quizName}
-                  label="Collection Name"
+                  label="Class Name"
                   value={newTitle}
                   id="outlined-basic"
                   onChange={(event) => {
@@ -246,7 +246,7 @@ const Toolbar = ({ className, ...rest }) => {
           variant="contained"
           onClick={goAddNewQuiz}
         >
-          Create Collection
+          Create Class
         </Button>
       </Box>
       <Box mt={3}>
@@ -267,7 +267,7 @@ const Toolbar = ({ className, ...rest }) => {
                     </InputAdornment>
                   )
                 }}
-                placeholder="Search collection"
+                placeholder="Search Class"
                 variant="outlined"
               />
             </Box>

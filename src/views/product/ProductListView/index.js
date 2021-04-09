@@ -27,14 +27,16 @@ const ProductList = () => {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     async function getList() {
-      await getQuizList().then((res) => {
+      const user = JSON.parse(localStorage.getItem('brainaly_user'));
+      await getQuizList({ userid: user.userId }).then((res) => {
         const productsArray = [];
         for (let i = 0; i < res.result.length; i++) {
           const newData = {
             title: res.result[i].q_name,
             length: JSON.parse(res.result[i].q_content).length,
             description: res.result[i].q_description,
-            id: res.result[i].q_uid
+            id: res.result[i].q_uid,
+            media: res.result[i].q_cover === '' ? '/static/collection.png' : `http://localhost:3001/upload/${res.result[i].q_cover}`,
           };
           productsArray.push(newData);
           console.log(res.result[i]);
@@ -44,6 +46,24 @@ const ProductList = () => {
     }
     getList();
   }, []);
+  async function refresh() {
+    const user = JSON.parse(localStorage.getItem('brainaly_user'));
+    await getQuizList({ userid: user.userId }).then((res) => {
+      const productsArray = [];
+      for (let i = 0; i < res.result.length; i++) {
+        const newData = {
+          title: res.result[i].q_name,
+          length: JSON.parse(res.result[i].q_content).length,
+          description: res.result[i].q_description,
+          media: res.result[i].q_cover === '' ? '/static/collection.png' : `http://localhost:3001/upload/${res.result[i].q_cover}`,
+          id: res.result[i].q_uid
+        };
+        productsArray.push(newData);
+        console.log(res.result[i]);
+      }
+      setProducts(productsArray);
+    });
+  }
   return (
     <Page
       className={classes.root}
@@ -67,6 +87,7 @@ const ProductList = () => {
                 <ProductCard
                   className={classes.productCard}
                   product={product}
+                  handleRefresh={refresh}
                 />
               </Grid>
             ))}

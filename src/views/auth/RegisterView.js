@@ -97,7 +97,7 @@ const RegisterView = () => {
                   if (res.flag) {
                     cogoToast.success(res.msg, { position: 'bottom-right' });
                     setTimeout(() => {
-                      navigate('/user/signin', { replace: true });
+                      navigate('/signin', { replace: true });
                     }, 1500);
                   } else {
                     cogoToast.warn(res.msg, { position: 'bottom-right' });

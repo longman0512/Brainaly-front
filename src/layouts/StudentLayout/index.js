@@ -1,9 +1,8 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
-import TopBar from './Header';
 import NavBar from './NavBar';
+import TopBar from './TopBar';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
     flex: '1 1 auto',
     overflow: 'hidden',
     paddingTop: 64,
+    [theme.breakpoints.up('lg')]: {
+      paddingLeft: 256
+    }
   },
   contentContainer: {
     display: 'flex',

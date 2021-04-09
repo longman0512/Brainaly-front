@@ -81,11 +81,17 @@ const TopBar = ({
       {...rest}
     >
       <Toolbar>
-        <RouterLink to="/">
+        <RouterLink to="/teacher/collections">
           <Logo />
         </RouterLink>
         <Box flexGrow={1} />
         <Hidden mdDown>
+          <IconButton
+            color="#01025C"
+            onClick={onMobileNavOpen}
+          >
+            <MenuIcon />
+          </IconButton>
           <IconButton
             color="#01025C"
           >

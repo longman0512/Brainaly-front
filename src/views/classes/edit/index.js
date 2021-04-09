@@ -12,12 +12,30 @@ import {
   Divider,
   Button
 } from '@material-ui/core';
-import { getColById, getQuizById } from 'src/utils/Api';
+import { getClassById, getStudentById } from 'src/utils/Api';
 import CollectionContext from 'src/context/collection';
+import { DataGrid } from '@material-ui/data-grid';
 import ProductCard from './ProductCard';
 import EditDialog from './dialog';
 import AddDialog from './AddPop';
 
+const columns = [
+  {
+    field: 'media',
+    headerName: 'Photo',
+    sortable: false,
+    width: 80,
+  },
+  { field: 'id', headerName: 'ID', width: 70 },
+  { field: 'name', headerName: 'Name', width: 130 },
+  // { field: 'lastName', headerName: 'Last name', width: 130 },
+  {
+    field: 'birthday',
+    headerName: 'Birthday',
+    type: 'date',
+    width: 150,
+  }
+];
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: 20
@@ -84,28 +102,29 @@ export default function EditCollection() {
   useEffect(() => {
     async function fetchData() {
       const user = JSON.parse(localStorage.getItem('brainaly_user'));
-      await getColById({ id }).then(async (res) => {
-        const quizList = JSON.parse(res[0].col_quiz);
-        setSelectedQuiz(res[0].col_quiz);
+      await getClassById({ id }).then(async (res) => {
+        const quizList = JSON.parse(res[0].cl_students);
+        setSelectedQuiz(res[0].cl_students);
         const quizArray = [];
         for (let i = 0; i < quizList.length; i++) {
           const data = { id: quizList[i].id, userid: user.userId };
-          await getQuizById(data).then((res) => {
+          console.log(data);
+          await getStudentById(data).then((res) => {
+            const born = new Date(res[0].u_birthday);
             quizArray.push({
-              title: res[0].q_name,
-              description: res[0].q_description,
-              media: res[0].q_cover,
-              id: res[0].q_uid,
-              size: JSON.parse(res[0]?.q_content)?.length
+              media: res[0].u_avatar,
+              id: res[0].u_id,
+              name: res[0].u_name,
+              birthday: res[0].u_birthday === null ? 'Undefined' : `${born.getFullYear()}-${born.getMonth() + 1}-${born.getDate()}`,
             });
           });
         }
         setProduct(quizArray);
         setCollection({
-          image: res[0].col_image === ''
-            ? '/static/collection.png' : `http://localhost:3001/upload/${res[0].col_image}`,
-          description: res[0].col_description,
-          title: res[0].col_name,
+          image: res[0].cl_cover === ''
+            ? '/static/collection.png' : `http://localhost:3001/upload/${res[0].cl_cover}`,
+          description: res[0].cl_description,
+          title: res[0].cl_name,
           product: quizArray,
           quizList,
         });
@@ -154,29 +173,16 @@ export default function EditCollection() {
             <CardContent>
               <div className={classes.headerContainer}>
                 <Typography className={classes.title} color="textSecondary" variant="h6" gutterBottom>
-                  Add collection content
+                  Entered students list
                 </Typography>
-                <Button variant="contained" color="primary" onClick={addQuizes}>Add Quiz</Button>
               </div>
               <Divider className={classes.divider} />
-              <div>
-                <Grid container xs={12} spacing={2}>
+              <div style={{ height: 'calc(100vh - 200px)', width: '100%' }}>
+                <DataGrid rows={product} columns={columns} pageSize={10} checkboxSelection />
+                {/* <Grid container xs={12} spacing={2}>
                   {collection?.product?.map((product, index) => (
-                    <Grid
-                      item
-                      key={product.id}
-                      lg={12}
-                      md={12}
-                      xs={12}
-                    >
-                      <ProductCard
-                        className={classes.productCard}
-                        product={product}
-                        indexId={index}
-                      />
-                    </Grid>
                   ))}
-                </Grid>
+                </Grid> */}
               </div>
             </CardContent>
           </Card>

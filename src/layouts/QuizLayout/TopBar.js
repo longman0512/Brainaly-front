@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import {
@@ -25,6 +25,7 @@ import { v4 as uuid } from 'uuid';
 import Logo from 'src/components/Logo';
 import StoreContext from 'src/context/index';
 import { updateQuizData } from 'src/utils/Api';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -63,6 +64,7 @@ const TopBar = ({
   const open = Boolean(anchorEl);
   const handle = window.location.search;
   const id = new URLSearchParams(handle).get('id');
+  const navigate = useNavigate();
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -82,11 +84,20 @@ const TopBar = ({
     handleMenuClose();
   };
   async function handleSave() {
-    const data = { id, data: JSON.stringify(store.items) };
+    const user = JSON.parse(localStorage.getItem('brainaly_user'));
+    const data = {
+      id,
+      data: JSON.stringify(store.items),
+      userid: user.userId
+    };
     await updateQuizData(data).then((res) => {
       console.log(res);
     });
   }
+  const logOut = () => {
+    localStorage.removeItem('brainaly_user');
+    navigate('/signin', { replace: true });
+  };
   return (
     <AppBar
       className={clsx(classes.topBar, className)}
@@ -94,7 +105,7 @@ const TopBar = ({
       {...rest}
     >
       <Toolbar>
-        <RouterLink to="/">
+        <RouterLink to="/teacher/home">
           <Logo />
         </RouterLink>
         <Box flexGrow={1} />
@@ -127,6 +138,11 @@ const TopBar = ({
           <MenuItem key={uuid} onClick={viewMembership}>
             <CardMembershipIcon className={classes.menuIcon} />
             Manage Membership
+          </MenuItem>
+          <MenuItem key={uuid} onClick={logOut}>
+            <ExitToAppIcon className={classes.menuIcon} />
+            {' '}
+            Logout
           </MenuItem>
         </Menu>
         {/* </Hidden> */}

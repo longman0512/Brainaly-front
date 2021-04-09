@@ -6,7 +6,6 @@ import {
   Box,
   Divider,
   Drawer,
-  Hidden,
   List,
   Typography,
   makeStyles
@@ -37,7 +36,7 @@ const items = [
     title: 'Collections'
   },
   {
-    href: '/teacher/class',
+    href: '/teacher/classe',
     icon: UsersIcon,
     title: 'Classes'
   },
@@ -92,7 +91,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
           className={classes.avatar}
           component={RouterLink}
           src={user.avatar}
-          to="/teacher/account"
+          to="/app/account"
         />
         <Typography
           className={classes.name}
@@ -126,27 +125,15 @@ const NavBar = ({ onMobileClose, openMobile }) => {
 
   return (
     <>
-      <Hidden lgUp>
-        <Drawer
-          anchor="left"
-          classes={{ paper: classes.mobileDrawer }}
-          onClose={onMobileClose}
-          open={openMobile}
-          variant="temporary"
-        >
-          {content}
-        </Drawer>
-      </Hidden>
-      <Hidden mdDown>
-        <Drawer
-          anchor="left"
-          classes={{ paper: classes.desktopDrawer }}
-          open
-          variant="persistent"
-        >
-          {content}
-        </Drawer>
-      </Hidden>
+      <Drawer
+        anchor="left"
+        classes={{ paper: classes.mobileDrawer }}
+        onClose={onMobileClose}
+        open={openMobile}
+        variant="temporary"
+      >
+        {content}
+      </Drawer>
     </>
   );
 };
