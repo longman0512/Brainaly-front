@@ -110,6 +110,7 @@ const routes = [
     path: 'student',
     element: <StudentLayout />,
     children: [
+      { path: 'account', element: <AccountView /> },
       { path: 'home', element: <StudentHome /> },
       { path: 'signup', element: <RegisterView /> },
       { path: 'signin', element: <LoginView /> },

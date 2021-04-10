@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
@@ -16,12 +16,6 @@ import {
   Users as UsersIcon
 } from 'react-feather';
 import NavItem from './NavItem';
-
-const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
-  jobTitle: 'Senior Developer',
-  name: 'Katarina Smith'
-};
 
 const items = [
   {
@@ -56,7 +50,14 @@ const useStyles = makeStyles(() => ({
 const NavBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
-
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [userName, setUserName] = useState('');
+  useEffect(() => {
+    const currentUser = localStorage.getItem('brainaly_user');
+    const userObject = JSON.parse(currentUser);
+    setAvatarUrl(userObject?.userAvatar);
+    setUserName(userObject?.userName);
+  });
   useEffect(() => {
     if (openMobile && onMobileClose) {
       onMobileClose();
@@ -79,21 +80,15 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         <Avatar
           className={classes.avatar}
           component={RouterLink}
-          src={user.avatar}
-          to="/app/account"
+          src={avatarUrl ? `http://localhost:3001/upload/${avatarUrl}` : null}
+          to="/student/account"
         />
         <Typography
           className={classes.name}
           color="textPrimary"
           variant="h5"
         >
-          {user.name}
-        </Typography>
-        <Typography
-          color="textSecondary"
-          variant="body2"
-        >
-          {user.jobTitle}
+          {userName}
         </Typography>
       </Box>
       <Divider />

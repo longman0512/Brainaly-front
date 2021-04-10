@@ -1,7 +1,7 @@
-import React from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import moment from 'moment';
 import {
   Avatar,
   Box,
@@ -13,9 +13,11 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
+import ProfileContext from 'src/context/profile';
+import { imageUpload } from 'src/utils/Api';
 
 const user = {
-  avatar: '/static/images/avatars/avatar_6.png',
+  avatar: 'http://localhost:3001/upload/1616034412821-avatar.jpg',
   city: 'Los Angeles',
   country: 'USA',
   jobTitle: 'Senior Developer',
@@ -28,12 +30,50 @@ const useStyles = makeStyles(() => ({
   avatar: {
     height: 100,
     width: 100
+  },
+  fileModal: {
+    display: 'none'
+  },
+  userName: {
+    marginTop: 20,
   }
 }));
 
 const Profile = ({ className, ...rest }) => {
   const classes = useStyles();
+  const { profile, setProfile } = React.useContext(ProfileContext);
+  useEffect(() => {
+    const currentUser = localStorage.getItem('brainaly_user');
+    const userObject = JSON.parse(currentUser);
+    setProfile(userObject);
+    console.log(profile);
+  }, [localStorage]);
 
+  const handleImageChange = async (e) => {
+    if (e.target.files[0]) {
+      e.preventDefault();
+      const reader = URL.createObjectURL(e.target.files[0]);
+      await imageUpload(e.target.files[0]).then((res) => {
+        console.log(res.data.filename);
+        const localStore = profile;
+        const newStore = {
+          userAvatar: res.data.filename,
+          userEmail: localStore.userEmail,
+          userId: localStore.userId,
+          userName: localStore.userName,
+          userPhone: localStore.userPhone,
+          userSchool: localStore.userSchool,
+          userType: localStore.userType,
+          user_birth: localStore.user_birth,
+        };
+        setProfile(newStore);
+        localStorage.setItem('brainaly_user', JSON.stringify(newStore));
+      });
+    }
+  };
+  const clickFileUpload = () => {
+    document.getElementById('image_select').click();
+  };
   return (
     <Card
       className={clsx(classes.root, className)}
@@ -47,36 +87,32 @@ const Profile = ({ className, ...rest }) => {
         >
           <Avatar
             className={classes.avatar}
-            src={user.avatar}
+            src={profile.userAvatar ? `http://localhost:3001/upload/${profile.userAvatar}` : null}
           />
           <Typography
             color="textPrimary"
             gutterBottom
-            variant="h3"
+            variant="h5"
+            className={classes.userName}
           >
-            {user.name}
+            {profile.userName}
           </Typography>
           <Typography
             color="textSecondary"
             variant="body1"
           >
-            {`${user.city} ${user.country}`}
-          </Typography>
-          <Typography
-            className={classes.dateText}
-            color="textSecondary"
-            variant="body1"
-          >
-            {`${moment().format('hh:mm A')} ${user.timezone}`}
+            {profile.userPhone}
           </Typography>
         </Box>
       </CardContent>
       <Divider />
       <CardActions>
+        <input type="file" id="image_select" onChange={(event) => { handleImageChange(event); }} className={classes.fileModal} />
         <Button
           color="primary"
           fullWidth
           variant="text"
+          onClick={clickFileUpload}
         >
           Upload picture
         </Button>

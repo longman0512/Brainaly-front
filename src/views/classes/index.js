@@ -39,7 +39,7 @@ const ClassView = () => {
           const students = JSON.parse(res.result[i].cl_students);
           const newData = {
             title: res.result[i].cl_name,
-            media: res.result[i].cl_cover === '' ? '/static/cllection.png' : `http://localhost:3001/upload/${res.result[i].cl_cover}`,
+            media: res.result[i].cl_cover === '' ? '/static/collection.png' : `http://localhost:3001/upload/${res.result[i].cl_cover}`,
             description: res.result[i].cl_description,
             id: res.result[i].cl_uid,
             studentNum: students.length,

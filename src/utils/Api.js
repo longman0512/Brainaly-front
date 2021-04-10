@@ -199,3 +199,13 @@ export async function getStudentById(id) {
   });
   return DATA;
 }
+export async function updateProfile(data) {
+  const DATA = await Axios.post('updateprofile', data).then((res) => {
+    if (res.status === 200) {
+      cogoToast.warn('Profile updated successfully', { position: 'top-right' });
+      return res.data.data;
+    }
+    return res.data.data;
+  });
+  return DATA;
+}

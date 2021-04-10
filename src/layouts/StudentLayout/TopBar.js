@@ -69,7 +69,7 @@ const TopBar = ({
   };
 
   const viewProfile = () => {
-    console.log('edit');
+    navigate('/student/account', { replace: true });
     handleMenuClose();
   };
 

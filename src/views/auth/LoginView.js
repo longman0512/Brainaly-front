@@ -72,14 +72,18 @@ const LoginView = () => {
                     });
                     setTimeout(() => {
                       console.log(res);
+                      const userData = {
+                        userId: res.data.u_id,
+                        userEmail: res.data.u_email,
+                        userName: res.data.u_name,
+                        userAvatar: res.data.u_avatar,
+                        user_birth: res.data.u_birthday,
+                        userType: res.data.u_type,
+                        userSchool: res.data.u_school,
+                        userPhone: res.data.u_phonenumber
+                      };
+                      localStorage.setItem('brainaly_user', JSON.stringify(userData));
                       if (res.data.u_type === 'teacher') {
-                        const userData = {
-                          userId: res.data.u_id,
-                          userEmail: res.data.u_email,
-                          userName: res.data.u_name,
-                          userAvatar: res.data.u_avatar
-                        };
-                        localStorage.setItem('brainaly_user', JSON.stringify(userData));
                         navigate('/teacher/home', { replace: true });
                       } else if (res.data.u_type === 'student') {
                         navigate('/student/home', { replace: true });
